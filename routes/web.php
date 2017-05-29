@@ -14,3 +14,20 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+//
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+//
+
+// Route::get('/home/zloty', 'CarRallyController@index');
+
+Route::get('/zloty', 'CarRallyController@index');
+Route::get('/zloty/utworz', 'CarRallyController@create');
+Route::get('/zloty/{carRally}', 'CarRallyController@show');
+Route::post('/zloty', 'CarRallyController@store');
+
+Route::get('/zloty/{carRally}/dashboard', 'CarRallyController@dashboard')->middleware(['\App\Http\Middleware\UserRelatedWithCarRally']);
+
+// Route::get('/{carRally}', 'CarRallyController@show');
