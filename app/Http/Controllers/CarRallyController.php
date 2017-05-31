@@ -31,7 +31,7 @@ class CarRallyController extends Controller
     {
         $this->validate(request(), [
             'name' => 'required|string|max:100',
-            'alias' => 'required|max:30|unique:car_rallies',
+            'alias' => 'required|max:30|unique:car_rallies|regex:/^[a-zA-Z0-9-]+$/',
             'description' => 'required|string|max:600',
             'username' => 'required|string|max:30',
             'email' => 'required|string|email|max:255',
@@ -46,14 +46,16 @@ class CarRallyController extends Controller
             'ends_at' => request('ends_at'),
         ]);
 
-        \App\User::create([
+        $user = \App\User::create([
             'car_rally_id' => $carRally->id,
             'username' => request('username'),
             'email' => request('email'),
             'password' => bcrypt(request('password'))
         ]);
 
-        return redirect()->back();
+        auth()->login($user);
+
+        return redirect()->route('zlot', ['carRally'=> $carRally->alias]);
     }
 
     /**

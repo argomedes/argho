@@ -21,13 +21,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 //
 
-// Route::get('/home/zloty', 'CarRallyController@index');
-
+// Zlot samochodowy
 Route::get('/zloty', 'CarRallyController@index');
-Route::get('/zloty/utworz', 'CarRallyController@create');
-Route::get('/zloty/{carRally}', 'CarRallyController@show');
+Route::get('/zloty/utworz', 'CarRallyController@create')->middleware('guest');
+Route::get('/zloty/{carRally}', 'CarRallyController@show')->name('zlot');
 Route::post('/zloty', 'CarRallyController@store');
 
-Route::get('/zloty/{carRally}/dashboard', 'CarRallyController@dashboard')->middleware(['\App\Http\Middleware\UserRelatedWithCarRally']);
+// Dashboard
+Route::get('/zloty/{carRally}/dashboard', 'CarRallyController@dashboard')->middleware(['auth', '\App\Http\Middleware\UserRelatedWithCarRally']);
 
-// Route::get('/{carRally}', 'CarRallyController@show');
+
+Route::get('/zloty/{carRally}/login', 'SessionController@create');
+Route::post('/zloty/{carRally}/login', 'SessionController@store');
+Route::get('/zloty/{carRally}/logout', 'SessionController@destroy');
