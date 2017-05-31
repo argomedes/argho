@@ -7,7 +7,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Utwórz zlot</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="/zloty">
+                    <form class="form-horizontal" role="form" method="POST" action="/zloty" enctype="multipart/form-data">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -75,6 +75,20 @@
                                 @if ($errors->has('ends_at'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('ends_at') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('cover') ? ' has-error' : '' }}">
+                            <label for="cover" class="col-md-4 control-label">Zdjęcie zlotu</label>
+
+                            <div class="col-md-6">
+                                <input id="cover" type="file" class="form-control" name="cover">
+
+                                @if ($errors->has('cover'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('cover') }}</strong>
                                     </span>
                                 @endif
                             </div>

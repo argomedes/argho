@@ -11,8 +11,8 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
-                    <a href="zloty/create">Dodaj zlot</a>
+                    {{ $carRally->description }}
+                    <img src="{{ asset('storage/'.$carRally->cover) }}" />
                 </div>
 
 

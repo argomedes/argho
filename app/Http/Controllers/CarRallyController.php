@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Image;
 
 use App\CarRally;
 
@@ -38,13 +40,17 @@ class CarRallyController extends Controller
             'password' => 'required|string|min:6|confirmed'
         ]);
 
+        $cover = str_replace('public/', '', request()->file('cover')->store('public/covers'));
+
         $carRally = CarRally::create([
             'name' => request('name'),
             'alias' => request('alias'),
             'description' => request('description'),
             'starts_at' => request('starts_at'),
             'ends_at' => request('ends_at'),
+            'cover' => $cover
         ]);
+
 
         $user = \App\User::create([
             'car_rally_id' => $carRally->id,
