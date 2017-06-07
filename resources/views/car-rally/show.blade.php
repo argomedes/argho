@@ -1,18 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
-<div class="container">
+<div class="container main">
     <div class="row">
-        <div class="col-md-3">
-                <h2>{{ $carRally->alias }}</h2>
+        <div class="col s3">
         </div>
-        <div class="col-md-9">
+        <div class="col s9">
             <div class="panel panel-default">
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
                     {{ $carRally->description }}
-                    <img src="{{ asset('storage/'.$carRally->cover) }}" />
                 </div>
 
 

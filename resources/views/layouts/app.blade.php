@@ -8,10 +8,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'AutoZloty.pl') }}</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {!! MaterializeCSS::include_full() !!}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -19,69 +21,110 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+    @yield('head-end')
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
+<body class="layout-app">
+    <div class="navbar-fixed">
+        <nav>
             <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @if (Auth::guest())
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->username }} <span class="caret"></span>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="nav-wrapper">
+                            <div class="brand-logo">
+                                <a href="{{ url('/') }}">
+                                    {{ config('app.name', 'Laravel') }}
                                 </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
+                                @if ($carRally)
+                                    <small>
+                                        <a class="grey-text text-lighten-4" href="/{{$carRally->alias}}">
+                                         /{{ $carRally->alias }}
                                         </a>
+                                    </small>
+                                @endif
+                            </div>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
+                            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                            <ul class="right hide-on-med-and-down">
+                                @if (Auth::guest())
+                                    <li><a href="{{ route('login', ['carRally'=> $carRally->alias ]) }}">Logowanie</a></li>
+                                    <li><a href="{{ route('utworz-zlot') }}">Utwórz własny zlot</a></li>
+                                @else
+                                    <!-- Dropdown Trigger -->
+                                    <li>
+                                        <a class="dropdown-button" href="#!" data-activates="dropdown1">{{ Auth::user()->username }}<i class="material-icons right">arrow_drop_down</i></a>
                                     </li>
-                                </ul>
-                            </li>
-                        @endif
-                    </ul>
+                                    <li class="dropdown">
+
+                                    <!-- Dropdown Structure -->
+                                    <ul id="dropdown1" class="dropdown-content">
+                                        <li><a href="{{ route('dashboard', ['carRally'=> $carRally->alias ]) }}">Panel organizatora</a></li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{{ route('wylogowanie', ['carRally'=> $carRally->alias ]) }}"
+                                                onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                    </ul>
+
+                                    </li>
+                                @endif
+                            </ul>
+                            <ul class="side-nav" id="mobile-demo">
+                                <li><a href="sass.html">Sass</a></li>
+                                <li><a href="badges.html">Components</a></li>
+                                <li><a href="collapsible.html">Javascript</a></li>
+                                <li><a href="mobile.html">Mobile</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
-
-        @yield('content')
     </div>
+
+    <main>
+
+        @include('parts.header')
+
+        @include('parts.menu')
+        
+        @yield('content')
+    </main>
+
+    <footer class="page-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2017 {{ config('app.name', 'AutoZloty.pl') }}
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    @yield('body-end')
 </body>
 </html>

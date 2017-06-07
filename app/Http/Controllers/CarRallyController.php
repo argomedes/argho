@@ -32,9 +32,12 @@ class CarRallyController extends Controller
     public function store()
     {
         $this->validate(request(), [
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:60',
             'alias' => 'required|max:30|unique:car_rallies|regex:/^[a-zA-Z0-9-]+$/',
-            'description' => 'required|string|max:600',
+            'description' => 'required|string|max:300',
+            'starts_at' => 'required',
+            'starts_at_hour' => 'required',
+            'place' => 'required|string',
             'username' => 'required|string|max:30',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed'
@@ -48,6 +51,10 @@ class CarRallyController extends Controller
             'description' => request('description'),
             'starts_at' => request('starts_at'),
             'ends_at' => request('ends_at'),
+            'starts_at_hour' => request('starts_at_hour'),
+            'ends_at_hour' => request('ends_at_hour'),
+            'ends_at' => 'after_or_equal:starts_at',
+            'place' => request('place'),
             'cover' => $cover
         ]);
 
@@ -74,10 +81,13 @@ class CarRallyController extends Controller
     {
         return view('car-rally.show', compact('carRally'));
     }
+
     public function dashboard(CarRally $carRally)
     {
         return view('car-rally.show', compact('carRally'));
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -85,9 +95,9 @@ class CarRallyController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function edit(CarRally $carRally)
     {
-        //
+         return view('dashboard.car-rally.edit', compact('carRally'));
     }
 
     /**
@@ -96,9 +106,32 @@ class CarRallyController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update($id)
+    public function update(Request $request, CarRally $carRally)
     {
+        $this->validate(request(), [
+            'name' => 'required|string|max:60',
+            'description' => 'required|string|max:300',
+            'starts_at' => 'required',
+            'starts_at_hour' => 'required',
+            'ends_at' => 'after_or_equal:starts_at',
+            'place' => 'required|string'
+        ]);
+
+        $input = $request->all(); /* Request all inputs */
+        $input['cover'] = str_replace('public/', '', request()->file('cover')->store('public/covers'));
+
+        $carRally->fill($input); /* Fill the inputs with new values */
+
+        $carRally->save(); /* Save the new values in database */
+
+        // $request['cover'] = str_replace('public/', '', request()->file('cover')->store('public/covers'));
+        // $carRally->update($request->only('cover'));
         //
+        // $carRally->update($request->except(['alias', 'cover']));
+
+
+        return back();
+
     }
 
     /**
@@ -111,4 +144,8 @@ class CarRallyController extends Controller
     {
         //
     }
+
+
+
+
 }

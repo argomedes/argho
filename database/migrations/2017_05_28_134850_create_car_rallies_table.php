@@ -18,7 +18,7 @@ class CreateCarRalliesTable extends Migration
             $table->string('name');
             $table->string('alias')->unique();
             $table->text('description');
-            $table->dateTime('starts_at')->nullable(); // TODO
+            $table->dateTime('starts_at');
             $table->dateTime('ends_at')->nullable();
             $table->timestamps();
         });

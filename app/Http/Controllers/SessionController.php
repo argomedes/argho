@@ -16,21 +16,21 @@ class SessionController extends Controller
         return view('auth.login', compact('carRally'));
     }
 
-    public function store()
+    public function store(\App\CarRally $carRally)
     {
         if(! auth()->attempt(request(['car_rally_id', 'email', 'password']))) {
     		return back()->withErrors([
-    			'message' => 'Please check your credentials and try again.'
+    			'email' => 'Podany email lub hasło jest nieprawidłowe. Proszę spróbowa ponownie.'
     		]);
     	}
 
-        return redirect()->intended('/home');
+        return redirect()->route('dashboard', ['carRally'=> $carRally->alias]);
     }
 
-    public function destroy()
+    public function destroy(\App\CarRally $carRally)
     {
         auth()->logout();
 
-        return redirect()->home();
+        return redirect()->route('zlot.index', ['carRally'=> $carRally->alias]);;
     }
 }
