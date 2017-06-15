@@ -65,7 +65,7 @@
 
                             <div class="col s3">
                                 <div class="input-field">
-                                    <label for="starts_at_hour" class="active">Godzina końca zlotu</label>
+                                    <label for="starts_at_hour" class="active">Godzina początku zlotu</label>
 
                                     <input id="starts_at_hour" type="time" class="{{ $errors->has('starts_at_hour') ? ' invalid' : '' }}" name="starts_at_hour" value="{{ $carRally->starts_at_hour }}" required>
 
@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="input-field">
-                            <label for="place" class="active">Miejce odbywania się zlotu *</label>
+                            <label for="place" class="active">Adres zlotu *</label>
 
                             <input id="place" type="text" class="{{ $errors->has('place') ? ' invalid' : '' }}" name="place" value="{{ $carRally->place }}" required>
 
@@ -117,6 +117,36 @@
                                 </span>
                             @endif
                         </div>
+
+                        <div class="row">
+                            <div class="col s6">
+                                <div class="input-field">
+                                    <label for="contact_email" class="active">E-mail kontatowy *</label>
+
+                                    <input id="contact_email" type="email" class="{{ $errors->has('contact_email') ? ' invalid' : '' }}" name="contact_email" value="{{ $carRally->contact_email }}" required>
+
+                                    @if ($errors->has('contact_email'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('contact_email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="input-field">
+                                    <label for="contact_phone_number" class="active">Telefon kontaktowy *</label>
+
+                                    <input id="contact_phone_number" type="number" class="{{ $errors->has('contact_phone_number') ? ' invalid' : '' }}" name="contact_phone_number" value="{{ $carRally->contact_phone_number }}" required>
+
+                                    @if ($errors->has('contact_phone_number'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('contact_phone_number') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="row">
                             <div class="col s9">

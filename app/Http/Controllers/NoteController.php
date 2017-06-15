@@ -3,25 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post;
+use App\Note;
 use App\CarRally;
 
-class PostController extends Controller
+class NoteController extends Controller
 {
     public function index(CarRally $carRally)
     {
-        $posts = Post::latest()
+        $notes = Note::latest()
             ->paginate(6);
 
-        return view('posts.index', compact('carRally', 'posts'));
-    }
-
-    public function dashboardIndex(CarRally $carRally)
-    {
-        $posts = Post::latest()
-            ->paginate(6);
-
-        return view('dashboard.posts.index', compact('carRally', 'posts'));
+        return view('dashboard.notes.index', compact('carRally', 'notes'));
     }
 
     /**
@@ -31,7 +23,7 @@ class PostController extends Controller
      */
     public function create(CarRally $carRally)
     {
-        return view('dashboard.posts.create', compact('carRally'));
+        return view('dashboard.notes.create', compact('carRally'));
     }
 
     /**
@@ -48,11 +40,11 @@ class PostController extends Controller
             'body' => 'required'
         ]);
 
-        auth()->user()->publish(
-            new Post(request(['car_rally_id', 'title', 'body']))
+        auth()->user()->publishNote(
+            new Note(request(['car_rally_id', 'title', 'body']))
         );
 
-        return redirect()->route('dashboard.posts.index', ['carRally'=> $carRally->alias]);
+        return redirect()->route('dashboard.notes.index', ['carRally'=> $carRally->alias]);
     }
 
     /**
@@ -61,14 +53,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(CarRally $carRally, Post $post)
+    public function show(CarRally $carRally, Note $note)
     {
-        return view('posts.show', compact('carRally', 'post'));
-    }
-
-    public function dashboardShow(CarRally $carRally, Post $post)
-    {
-        return view('dashboard.posts.show', compact('carRally', 'post'));
+        return view('dashboard.notes.show', compact('carRally', 'note'));
     }
 
     /**
@@ -77,9 +64,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(CarRally $carRally, Post $post)
+    public function edit(CarRally $carRally, Note $note)
     {
-        return view('dashboard.posts.edit', compact('carRally', 'post'));
+        return view('dashboard.notes.edit', compact('carRally', 'note'));
     }
 
     /**
@@ -89,11 +76,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CarRally $carRally, Post $post)
+    public function update(Request $request, CarRally $carRally, Note $note)
     {
-        $post->update($request->all());
+        $note->update($request->all());
 
-        return redirect()->route('dashboard.posts.index', ['carRally'=> $carRally->alias]);
+        return redirect()->route('dashboard.notes.index', ['carRally'=> $carRally->alias]);
     }
 
     /**
@@ -102,10 +89,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CarRally $carRally, Post $post)
+    public function destroy(CarRally $carRally, Note $note)
     {
-        $post->delete();
+        $note->delete();
 
-        return redirect()->route('dashboard.posts.index', ['carRally'=> $carRally->alias]);
+        return redirect()->route('dashboard.notes.index', ['carRally'=> $carRally->alias]);
     }
 }

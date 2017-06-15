@@ -43,6 +43,24 @@ main {
     width: 100%;
 }
 
-.layout-dashboard footer.page-footer {
-    padding-top: 0;
+footer.page-footer {
+    padding-top: 0!important;
+}
+
+.layout-dashboard .tabs .tab a {
+    color: #009688;
+}
+.layout-dashboard .tabs .tab a:hover, .layout-dashboard .tabs .tab a.active {
+    color: #048e81;
+}
+
+.layout-dashboard .tabs .indicator {
+    background: #048e81;
+}
+
+.big-text {
+    color: #048e81;
+    font-size: 7rem;
+    display: block;
+    font-weight: bold;
 }

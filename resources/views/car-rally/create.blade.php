@@ -4,14 +4,16 @@
 <div class="container main">
     <div class="row">
         <div class="col s8 offset-s2">
+            <h4 class="center-align">Edytuj zlot</h4>
+
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">Utwórz zlot</span>
-                    <div class="divider"></div>
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('utworz-zlot') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('utworz-zlot.store') }}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="row">
-                            <div class="col s6">
+                            <div class="col s12">
+                                <h5 class="center-align">Informacje o zlocie</h5>
+
                                 <div class="input-field{{ $errors->has('name') ? ' has-error' : '' }}">
                                     <label for="name">Nazwa zlotu *</label>
 
@@ -48,28 +50,103 @@
                                     @endif
                                 </div>
 
-                                <div class="input-field{{ $errors->has('starts_at') ? ' has-error' : '' }}">
-                                    <label for="starts_at">Początek zlotu *</label>
+                                <div class="row">
+                                    <div class="col s9">
+                                        <div class="input-field">
+                                            <label for="starts_at" class="active">Data początku zlotu *</label>
 
-                                    <input id="starts_at" type="date" class="datepicker" name="starts_at" value="{{ old('starts_at') }}">
+                                            <input id="starts_at" type="date" class="datepicker{{ $errors->has('starts_at') ? ' invalid' : '' }}" name="starts_at" value="{{ old('starts_at') }}" required>
 
-                                    @if ($errors->has('starts_at'))
+                                            @if ($errors->has('starts_at'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('starts_at') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3">
+                                        <div class="input-field">
+                                            <label for="starts_at_hour" class="active">Godzina początku zlotu</label>
+
+                                            <input id="starts_at_hour" type="time" class="{{ $errors->has('starts_at_hour') ? ' invalid' : '' }}" name="starts_at_hour" value="{{ old('starts_at_hour') }}" required>
+
+                                            @if ($errors->has('starts_at_hour'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('starts_at_hour') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col s9">
+                                        <div class="input-field">
+                                            <label for="ends_at" class="active">Data końca zlotu</label>
+
+                                            <input id="ends_at" type="date" class="datepicker{{ $errors->has('ends_at') ? ' invalid' : '' }}" name="ends_at" value="{{ old('ends_at') }}">
+
+                                            @if ($errors->has('ends_at'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('ends_at') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="col s3">
+                                        <div class="input-field">
+                                            <label for="ends_at_hour" class="active">Godzina końca zlotu</label>
+
+                                            <input id="ends_at_hour" type="time" class="{{ $errors->has('ends_at_hour') ? ' invalid' : '' }}" name="ends_at_hour" value="{{ old('ends_at_hour') }}">
+
+                                            @if ($errors->has('ends_at_hour'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('ends_at_hour') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-field">
+                                    <label for="place" class="active">Adres zlotu *</label>
+
+                                    <input id="place" type="text" class="{{ $errors->has('place') ? ' invalid' : '' }}" name="place" value="{{ old('place') }}" required>
+
+                                    @if ($errors->has('place'))
                                         <span class="help-block">
-                                            <strong>{{ $errors->first('starts_at') }}</strong>
+                                            <strong>{{ $errors->first('place') }}</strong>
                                         </span>
                                     @endif
                                 </div>
 
-                                <div class="input-field{{ $errors->has('ends_at') ? ' has-error' : '' }}">
-                                    <label for="ends_at">Koniec zlotu</label>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <div class="input-field">
+                                            <label for="contact_email" class="active">E-mail kontatowy *</label>
 
-                                    <input id="ends_at" type="date" class="datepicker" name="ends_at" value="{{ old('ends_at') }}">
+                                            <input id="contact_email" type="email" class="{{ $errors->has('contact_email') ? ' invalid' : '' }}" name="contact_email" value="{{ old('contact_email') }}" required>
 
-                                    @if ($errors->has('ends_at'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('ends_at') }}</strong>
-                                        </span>
-                                    @endif
+                                            @if ($errors->has('contact_email'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('contact_email') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col s6">
+                                        <div class="input-field">
+                                            <label for="contact_phone_number" class="active">Telefon kontaktowy *</label>
+
+                                            <input id="contact_phone_number" type="number" class="{{ $errors->has('contact_phone_number') ? ' invalid' : '' }}" name="contact_phone_number" value="{{ old('contact_phone_number') }}" required>
+
+                                            @if ($errors->has('contact_phone_number'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('contact_phone_number') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="input-field{{ $errors->has('cover') ? ' has-error' : '' }}">
@@ -92,8 +169,9 @@
 
                                 </div>
                             </div>
+                            <div class="col s12">
+                                <h5 class="center-align">Informacje o organizatorze</h5>
 
-                            <div class="col s6">
                                 <div class="input-field{{ $errors->has('email') ? ' has-error' : '' }}">
                                     <label for="email">E-Mail *</label>
 

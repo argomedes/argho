@@ -41,4 +41,14 @@ class User extends Authenticatable
     {
         $this->posts()->save($post);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
+    public function publishNote(Note $note)
+    {
+        $this->posts()->save($note);
+    }
 }

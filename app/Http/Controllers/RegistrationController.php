@@ -13,10 +13,13 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
+     public function index(CarRally $carRally)
+     {
+         $registrations = Registration::latest()
+             ->paginate(15);
+
+         return view('dashboard.registrations.index', compact('carRally', 'registrations'));
+     }
 
     /**
      * Show the form for creating a new resource.
@@ -25,7 +28,7 @@ class RegistrationController extends Controller
      */
     public function create(CarRally $carRally)
     {
-        return view('registration.create')->with('carRally', $carRally);
+        return view('registrations.create')->with('carRally', $carRally);
     }
 
     /**
@@ -55,7 +58,6 @@ class RegistrationController extends Controller
         $crew_size = 1 + ((request('pilot'))?1:0) + count(explode(",", request('additional_crew')));
 
         $registration = Registration::create([
-
             'car_rally_id' => request('car_rally_id'),
             'vehicle' => request('vehicle'),
             'year' => request('year'),
@@ -79,10 +81,10 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+     public function show(CarRally $carRally, Registration $registration)
+     {
+         return view('dashboard.registrations.show', compact('carRally', 'registration'));
+     }
 
     /**
      * Show the form for editing the specified resource.
@@ -90,10 +92,10 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+     public function edit(CarRally $carRally, Registration $registration)
+     {
+         return view('dashboard.registrations.edit', compact('carRally', 'registration'));
+     }
 
     /**
      * Update the specified resource in storage.
@@ -102,10 +104,12 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+     public function update(Request $request, CarRally $carRally, Registration $registration)
+     {
+         $registration->update($request->all());
+
+         return redirect()->route('dashboard.registrations.index', ['carRally'=> $carRally->alias]);
+     }
 
     /**
      * Remove the specified resource from storage.
@@ -113,8 +117,10 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+     public function destroy(CarRally $carRally, Registration $registration)
+     {
+         $registration->delete();
+
+         return redirect()->route('dashboard.registrations.index', ['carRally'=> $carRally->alias]);
+     }
 }

@@ -50,6 +50,8 @@
                                     <li><a href="{{ route('login', ['carRally'=> $carRally->alias ]) }}">Logowanie</a></li>
                                     <li><a href="{{ route('utworz-zlot') }}">Utwórz własny zlot</a></li>
                                 @else
+                                    <li><a href="{{ route('dashboard', ['carRally'=> $carRally->alias ]) }}">Panel organizatora</a></li>
+
                                     <!-- Dropdown Trigger -->
                                     <li>
                                         <a class="dropdown-button" href="#!" data-activates="dropdown1">{{ Auth::user()->username }}<i class="material-icons right">arrow_drop_down</i></a>
@@ -58,13 +60,12 @@
 
                                     <!-- Dropdown Structure -->
                                     <ul id="dropdown1" class="dropdown-content">
-                                        <li><a href="{{ route('dashboard', ['carRally'=> $carRally->alias ]) }}">Panel organizatora</a></li>
                                         <li class="divider"></li>
                                         <li>
                                             <a href="{{ route('wylogowanie', ['carRally'=> $carRally->alias ]) }}"
                                                 onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
-                                                Logout
+                                                Wyloguj się
                                             </a>
 
                                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

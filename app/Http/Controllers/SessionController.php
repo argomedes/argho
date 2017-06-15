@@ -16,11 +16,18 @@ class SessionController extends Controller
         return view('auth.login', compact('carRally'));
     }
 
-    public function store(\App\CarRally $carRally)
+    public function dashboardCreate(\App\CarRally $carRally)
     {
-        if(! auth()->attempt(request(['car_rally_id', 'email', 'password']))) {
+        return view('auth.login', compact('carRally'));
+    }
+
+    public function store(\App\CarRally $carRally, Request $request)
+    {
+         $remember = ($request->has('remember')) ? true : false;
+
+        if(! auth()->attempt(request(['car_rally_id', 'email', 'password']), $remember)) {
     		return back()->withErrors([
-    			'email' => 'Podany email lub hasło jest nieprawidłowe. Proszę spróbowa ponownie.'
+    			'email_or_password' => 'Podany email lub hasło jest nieprawidłowe. Proszę spróbować ponownie.'
     		]);
     	}
 

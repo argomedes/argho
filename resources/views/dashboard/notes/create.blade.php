@@ -13,11 +13,11 @@
     <div class="container main">
         <div class="row">
             <div class="col s8 offset-s2">
-                <h4 class="center-align">Dodaj wpis</h4>
+                <h4 class="center-align">Dodaj notatkę</h4>
 
                 <div class="card">
                     <div class="card-content">
-                        <form method="POST" action="{{ route('dashboard.posts.store', ['carRally' => $carRally]) }}">
+                        <form method="POST" action="{{ route('dashboard.notes.store', ['carRally' => $carRally]) }}">
                             {{ csrf_field() }}
 
                             <input name="car_rally_id" type="hidden" value="{{ $carRally->id }}">
@@ -27,7 +27,7 @@
                                 <input type="text" class="validate" value="{{ old('title') }}" id="title" name="title" data-length="60" required>
                             </div>
 
-                            <span class="grey-text">Treść wpisu *</span>
+                            <span class="grey-text">Treść notatki *</span>
 
                             <div class="row">
                                 <div class="col s12">
@@ -36,14 +36,14 @@
                             </div>
 
                             <div class="center-align">
-                                <button type="submit" class="btn btn-primary">Utwórz wpis</button>
+                                <button type="submit" class="btn btn-primary">Utwórz notatkę</button>
                             </div>
 
                             @include ('layouts.errors')
                         </form>
                     </div>
                 </div>
-                <a class="grey-text right" href="/{{ $carRally->alias }}/panel/wpisy">&larr; Powrót do wpisów</a>
+                <a class="grey-text right" href="/{{ $carRally->alias }}/panel/notatki">&larr; Powrót do notatek</a>
             </div>
         </div>
     </div>

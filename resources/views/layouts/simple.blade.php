@@ -25,7 +25,7 @@
 </head>
 <body>
     <div class="navbar-fixed">
-        <nav>
+        <nav class="teal">
             <div class="container">
                 <div class="row">
                     <div class="col s12">
@@ -48,7 +48,7 @@
         @yield('content')
     </main>
 
-    <footer class="page-footer">
+    <footer class="page-footer teal">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">

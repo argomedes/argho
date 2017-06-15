@@ -11,8 +11,10 @@
             <h4 class="center-align">Zadaj pytanie organizatorowi</h4>
             <div class="card">
                 <div class="card-content">
-                    <form method="POST" action="/zloty">
+                    <form method="POST" action="">
                         {{ csrf_field() }}
+
+                        <input name="car_rally_id" type="hidden" value="{{ $carRally->id }}">
 
                         <div class="input-field{{ $errors->has('name') ? ' has-error' : '' }}">
                             <i class="material-icons prefix">person</i>
@@ -83,9 +85,12 @@
             <h4 class="center-align">Informacje kontaktowe</h4>
             <div class="card">
                 <div class="card-content">
-
-
-                    {{-- {{  $carRally->contact->email }} --}}
+                    <h5>Adres:</h5>
+                    <span>{{  $carRally->place }}</span>
+                    <h5>E-mail:</h5>
+                    <span>{{  $carRally->contact_email }}</span>
+                    <h5>Numer telefon:</h5>
+                    <span>{{  $carRally->contact_phone_number }}</span>
                 </div>
             </div>
         </div>

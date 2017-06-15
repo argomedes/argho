@@ -38,12 +38,22 @@ class CarRallyController extends Controller
             'starts_at' => 'required',
             'starts_at_hour' => 'required',
             'place' => 'required|string',
+            'contact_email' => 'required|string|email',
+            'contact_phone_number' => 'required|string|min:7',
+            'ends_at' => 'nullable|after_or_equal:starts_at',
+
             'username' => 'required|string|max:30',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed'
         ]);
 
-        $cover = str_replace('public/', '', request()->file('cover')->store('public/covers'));
+        if (request()->hasFile('cover')) {
+            $cover = str_replace('public/', '', request()->file('cover')->store('public/covers'));
+        }
+        else {
+            $cover = 'default.jpg';
+        }
+
 
         $carRally = CarRally::create([
             'name' => request('name'),
@@ -53,8 +63,9 @@ class CarRallyController extends Controller
             'ends_at' => request('ends_at'),
             'starts_at_hour' => request('starts_at_hour'),
             'ends_at_hour' => request('ends_at_hour'),
-            'ends_at' => 'after_or_equal:starts_at',
             'place' => request('place'),
+            'contact_email' => request('contact_email'),
+            'contact_phone_number' => request('contact_phone_number'),
             'cover' => $cover
         ]);
 
@@ -63,7 +74,8 @@ class CarRallyController extends Controller
             'car_rally_id' => $carRally->id,
             'username' => request('username'),
             'email' => request('email'),
-            'password' => bcrypt(request('password'))
+            'password' => bcrypt(request('password')),
+            'creator' => true
         ]);
 
         auth()->login($user);
@@ -82,9 +94,9 @@ class CarRallyController extends Controller
         return view('car-rally.show', compact('carRally'));
     }
 
-    public function dashboard(CarRally $carRally)
+    public function dashboardShow(CarRally $carRally)
     {
-        return view('car-rally.show', compact('carRally'));
+        return view('dashboard.show', compact('carRally'));
     }
 
 
@@ -113,8 +125,10 @@ class CarRallyController extends Controller
             'description' => 'required|string|max:300',
             'starts_at' => 'required',
             'starts_at_hour' => 'required',
-            'ends_at' => 'after_or_equal:starts_at',
-            'place' => 'required|string'
+            'ends_at' => 'nullable|after_or_equal:starts_at',
+            'place' => 'required|string',
+            'contact_email' => 'required|string|email',
+            'contact_phone_number' => 'required|string|min:7'
         ]);
 
         $input = $request->all(); /* Request all inputs */

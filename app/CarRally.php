@@ -24,6 +24,16 @@ class CarRally extends Model
         return $this->hasMany(Registration::class);
     }
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
+
     public function getRouteKeyName() {
         return 'alias';
     }

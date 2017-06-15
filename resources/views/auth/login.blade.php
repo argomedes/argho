@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('content')
 <div class="container main">
@@ -13,34 +13,27 @@
 
                         <input name="car_rally_id" type="hidden" value="{{ $carRally->id }}">
 
-                        <div class="input-field{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-mail</label>
-
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                            @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                            @endif
+                        <div class="input-field">
+                            <input id="email" type="email" class="validate{{ $errors->has('email_or_password') ? ' invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                            <label for="email" data-error="@if ($errors->has('email_or_password'))
+                                {{ $errors->first('email_or_password') }} @endif">E-mail</label>
                         </div>
 
-                        <div class="input-field{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Hasło</label>
-
-                            <input id="password" type="password" class="form-control" name="password" required>
-
-                            @if ($errors->has('password'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('password') }}</strong>
-                                </span>
-                            @endif
+                        <div class="input-field">
+                            <input id="password" type="password" class="validate{{ $errors->has('email_or_password') ? ' invalid' : '' }}" name="password" required>
+                            <label for="password" data-error="@if ($errors->has('email_or_password'))
+                                {{ $errors->first('email_or_password') }} @endif">Hasło</label>
                         </div>
 
-                        <div class="center-align">
-                            <input class="filled-in" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                            <label for="remember">Zapamiętaj mnie</label>
+                        <div class="row">
+                            <div class="col s12">
+                                <div class="center-align">
+                                    <input class="filled-in" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <label for="remember">Zapamiętaj mnie</label>
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="center-align">
                             <button type="submit" class="waves-effect waves-light btn">
