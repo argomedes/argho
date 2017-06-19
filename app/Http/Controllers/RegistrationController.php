@@ -46,7 +46,7 @@ class RegistrationController extends Controller
             'photo' => 'required',
             'driver' => 'required|string|max:30',
             'email' => 'required|string|email|max:255',
-            'phone_number' => 'nullable|string|min:7',
+            'phone_number' => 'nullable|string|min:7|max:30',
             'pilot' => 'nullable|string|max:30',
             'additional_crew' => 'nullable|string|max:90',
             'numb_of_kids' => 'nullable|integer|digits:1',

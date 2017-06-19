@@ -27,11 +27,8 @@ Route::get('/home', 'HomeController@index');
 //
 
 // Zlot samochodowy
-Route::get('/zloty', 'CarRallyController@index'); //TODO
-Route::get('/zloty/{carRally}', 'CarRallyController@show')->name('zlot');
-
 Route::get('/utworz-zlot', 'CarRallyController@create')->middleware('guest')->name('utworz-zlot');
-Route::post('/utworz-zlot', 'CarRallyController@store')->name('utworz-zlot.store');
+Route::post('/utworz-zlot', 'CarRallyController@store')->middleware('guest')->name('utworz-zlot.store');
 
 Route::get('{carRally}/informacje', 'CarRallyInfoController@show');
 Route::get('{carRally}/regulamin', 'CarRallyRulesController@show');
