@@ -32,12 +32,23 @@
                                     @endphp
                                     @foreach ($notes as $note)
                                         <tr style="cursor:pointer;" onclick="parent.location='/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}'">
-                                            <td>{{ ++$count }}</td>
+                                            <td>{{ (($notes->currentPage() - 1 ) * $notes->perPage() ) + ++$count }}</td>
                                             <td>{{ $note->title }}</td>
                                             <td>{{ substr(strip_tags($note->body), 0, 300) }}@if (strlen($note->body) > 300) ... @endif</td>
                                             <td>{{ $note->created_at }}</td>
                                             <td>{{ $note->updated_at }}</td>
-                                            <td><a href="/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}"><i class="material-icons">remove_red_eye</i></a> <a href="/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}/edytuj"><i class="material-icons">edit</i></a>  <a href="/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}/usun" onclick="return confirm('Czy na pewno chcesz usnąć wpis?')"><i class="material-icons">delete</i></a></td>
+                                            <td>
+                                                <a href="/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}"><i class="material-icons">remove_red_eye</i></a>
+
+                                                <a href="/{{ $carRally->alias }}/panel/notatki/{{ $note->id }}/edytuj"><i class="material-icons">edit</i></a>
+
+                                                <form method="POST" action="{{ route('dashboard.notes.destroy', ['carRally' => $carRally, 'note' => $note]) }}">
+                                                    {{ method_field('DELETE') }}
+                                                    {{ csrf_field() }}
+                                                    <input type="submit" onclick="return confirm('Czy na pewno chcesz usnąć wpis?')">
+                                                    <i class="material-icons">delete</i></input>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

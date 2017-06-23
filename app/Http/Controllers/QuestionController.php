@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\CarRally;
 use App\Question;
 
-class QuestionCotroller extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +16,22 @@ class QuestionCotroller extends Controller
      public function index(CarRally $carRally)
      {
          $questions = Question::latest()
-             ->paginate(15);
+            ->where('car_rally_id', $carRally->id)
+             ->paginate(10);
 
          return view('dashboard.questions.index', compact('carRally', 'questions'));
      }
 
+     public function adminIndex()
+     {
+         $questions = Question::latest()
+             ->paginate(10);
+
+         return view('admin.questions.index', compact('questions'));
+     }
+
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create(CarRally $carRally)
     {
@@ -33,17 +40,14 @@ class QuestionCotroller extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request, CarRally $carRally)
     {
         $this->validate(request(), [
             'car_rally_id' => 'required',
             'name' => 'required|string|max:60',
-            'email' => 'required|email',
-            'topic' => 'required|string|max:120',
+            'email' => 'required|email|max:255',
+            'topic' => 'required|string|max:60',
             'body' => 'required|string'
         ]);
 
@@ -69,6 +73,11 @@ class QuestionCotroller extends Controller
         //
     }
 
+    public function adminShow(Question $question)
+    {
+        return view('admin.questions.show', compact('question'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -90,6 +99,18 @@ class QuestionCotroller extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function adminEdit(Question $question)
+    {
+        return view('admin.questions.edit', compact('question'));
+    }
+
+    public function adminUpdate(Request $request, Question $question)
+    {
+        $question->update($request->all());
+
+        return redirect()->route('admin.questions.index');
     }
 
     /**

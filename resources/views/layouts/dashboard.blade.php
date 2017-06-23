@@ -62,7 +62,7 @@
                                     <ul id="dropdown1" class="dropdown-content">
                                         <li class="divider"></li>
                                         <li>
-                                            <a href="{{ route('wylogowanie', ['carRally'=> $carRally->alias ]) }}"
+                                            <a href="{{ route('logout', ['carRally'=> $carRally->alias ]) }}"
                                                 onclick="event.preventDefault();
                                                          document.getElementById('logout-form').submit();">
                                                 Wyloguj się
@@ -100,7 +100,7 @@
         <div class="footer-copyright">
             <div class="container">
                 © 2017 {{ config('app.name', 'AutoZloty.pl') }}
-                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+                <a class="grey-text text-lighten-4 right" href="#!">Kontakt</a>
             </div>
         </div>
     </footer>

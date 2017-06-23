@@ -10,6 +10,13 @@ main {
     flex: 1 0 auto;
 }
 
+.homepage {
+    background:
+    linear-gradient(to bottom, rgba(255,255,255,0.7) 0%,rgba(255,255,255,0.7) 100%)
+    ,
+    url(../storage/background.jpg);,
+}
+
 .cover {
     min-height: 30vh;
     overflow: hidden;
@@ -63,4 +70,29 @@ footer.page-footer {
     font-size: 7rem;
     display: block;
     font-weight: bold;
+}
+
+
+
+.layout-admin .tabs .tab a {
+    color: #9e9e9e;
+}
+.layout-admin .tabs .tab a:hover, .layout-admin .tabs .tab a.active {
+    color: #757575 ;
+}
+
+.layout-admin .tabs .indicator {
+    background: #757575 ;
+}
+
+
+.delete {
+    display: inline;
+}
+
+.delete input[type="submit"] {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    opacity: 0;
 }

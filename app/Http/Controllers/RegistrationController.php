@@ -16,9 +16,18 @@ class RegistrationController extends Controller
      public function index(CarRally $carRally)
      {
          $registrations = Registration::latest()
-             ->paginate(15);
+            ->where('car_rally_id', $carRally->id)
+             ->paginate(10);
 
          return view('dashboard.registrations.index', compact('carRally', 'registrations'));
+     }
+
+     public function adminIndex()
+     {
+         $registrations = Registration::latest()
+             ->paginate(10);
+
+         return view('admin.registrations.index', compact('registrations'));
      }
 
     /**
@@ -86,6 +95,11 @@ class RegistrationController extends Controller
          return view('dashboard.registrations.show', compact('carRally', 'registration'));
      }
 
+     public function adminShow(Registration $registration)
+     {
+         return view('admin.registrations.show', compact('registration'));
+     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -109,6 +123,18 @@ class RegistrationController extends Controller
          $registration->update($request->all());
 
          return redirect()->route('dashboard.registrations.index', ['carRally'=> $carRally->alias]);
+     }
+
+     public function adminEdit(Registration $registration)
+     {
+         return view('admin.registrations.edit', compact('registration'));
+     }
+
+     public function adminUpdate(Request $request, Registration $registration)
+     {
+         $registration->update($request->all());
+
+         return redirect()->route('admin.registrations.index');
      }
 
     /**

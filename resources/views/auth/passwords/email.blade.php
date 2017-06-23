@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('password.email') }}">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('password.email', ['carRally'=> $carRally->alias ]) }}">
                         {{ csrf_field() }}
 
                         <input name="car_rally_id" type="hidden" value="{{ $carRally->id }}">

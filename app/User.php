@@ -14,9 +14,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'car_rally_id', 'username', 'email', 'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -49,6 +47,6 @@ class User extends Authenticatable
 
     public function publishNote(Note $note)
     {
-        $this->posts()->save($note);
+        $this->notes()->save($note);
     }
 }

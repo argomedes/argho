@@ -16,9 +16,9 @@ class AddHoursAndPlaceToCarRalliesTable extends Migration
         Schema::table('car_rallies', function (Blueprint $table) {
             $table->date('starts_at')->change();
             $table->date('ends_at')->nullable()->change();
-            $table->time('starts_at_hour')->change();
-            $table->time('ends_at_hour')->nullable()->change();
-            $table->string('place')->change();
+            $table->time('starts_at_hour');
+            $table->time('ends_at_hour')->nullable();
+            $table->string('place');
         });
     }
 

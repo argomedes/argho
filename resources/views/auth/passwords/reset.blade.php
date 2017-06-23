@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('password.request', ['carRally'=> $carRally->alias ]) }}">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ route('password.reset.perform') }}">
                         {{ csrf_field() }}
 
                         <input type="hidden" name="token" value="{{ $token }}">

@@ -14,7 +14,7 @@
                                 <table class="highlight responsive-table">
                                     <thead>
                                         <tr>
-                                            <th>L.p.</th>
+                                            <th>Lp.</th>
                                             <th>Pojazd</th>
                                             <th>Rok produkcji</th>
                                             <th>Zdjęcie pojazdu</th>
@@ -42,7 +42,7 @@
                                         @endphp
                                         @foreach ($registrations as $reg)
                                             <tr>
-                                                <td>{{ ++$count }}</td>
+                                                <td>{{ (($registrations->currentPage() - 1 ) * $registrations->perPage() ) + ++$count }}</td>
                                                 <td>{{ $reg->vehicle }}</td>
                                                 <td>{{ $reg->year }}</td>
                                                 <td><img class="responsive-img" src="{{ asset('storage/'.$reg->photo) }}" /></td>

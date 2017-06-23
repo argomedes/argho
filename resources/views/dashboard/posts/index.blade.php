@@ -10,37 +10,52 @@
                     <div class="card">
                         <div class="card-content">
                             <div style="overflow-x: auto;">
-                                <table class="highlight responsive-table">
-                                    <thead>
-                                        <tr>
-                                            <th>L.p.</th>
-                                            <th>Tytuł</th>
-                                            <th>Treść</th>
-                                            <th>Wysłano</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
+                                @if (sizeof($posts)==0)
+                                    <p>
+                                        {!! 'Nie dodano żadnych aktualności, <a href="/'.$carRally->alias.'/panel/wpisy/dodaj">dodaj nową</a>.' !!}
+                                    </p>
+                                @else
+                                    <table class="highlight responsive-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Lp.</th>
+                                                <th>Tytuł</th>
+                                                <th>Treść</th>
+                                                <th>Dodano</th>
+                                                <th>Edytowano</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
 
-                                    <tbody>
-                                        @if (sizeof($posts)==0)
-                                            <tr colspan="7">
-                                                {!! 'Nie dodano żadnych aktualności, <a href="/'.$carRally->alias.'/panel/wpisy/dodaj">dodaj nową</a>.' !!}
-                                            </tr>
-                                        @endif
-                                        @php
-                                            $count=0
-                                        @endphp
-                                        @foreach ($posts as $post)
-                                            <tr style="cursor:pointer;" onclick="parent.location='/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}'">
-                                                <td>{{ ++$count }}</td>
-                                                <td>{{ $post->title }}</td>
-                                                <td>{{ substr(strip_tags($post->body), 0, 300) }}@if (strlen($post->body) > 300) ... @endif</td>
-                                                <td>{{ $post->created_at }}</td>
-                                                <td><a href="/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}"><i class="material-icons">remove_red_eye</i></a> <a href="/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}/edytuj"><i class="material-icons">edit</i></a>  <a href="/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}/usun" onclick="return confirm('Czy na pewno chcesz usnąć wpis?')"><i class="material-icons">delete</i></a></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        <tbody>
+                                            @php
+                                                $count=0
+                                            @endphp
+
+                                            @foreach ($posts as $post)
+                                                <tr style="cursor:pointer;" onclick="parent.location='/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}'">
+                                                    <td>{{ (($posts->currentPage() - 1 ) * $posts->perPage() ) + ++$count }}</td>
+                                                    <td>{{ $post->title }}</td>
+                                                    <td>{{ substr(strip_tags($post->body), 0, 300) }}@if (strlen($post->body) > 300) ... @endif</td>
+                                                    <td>{{ $post->created_at }}</td>
+                                                    <td>{{ $post->updated_at }}</td>
+                                                    <td>
+                                                        <a href="/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}"><i class="material-icons">remove_red_eye</i></a>
+
+                                                        <a href="/{{ $carRally->alias }}/panel/wpisy/{{ $post->id }}/edytuj"><i class="material-icons">edit</i></a>
+
+                                                        <form method="POST" action="" class="delete">
+                                                            {{ method_field('DELETE') }}
+                                                            {{ csrf_field() }}
+                                                            <input type="submit" onclick="return confirm('Czy na pewno chcesz usnąć wpis?')">
+                                                            <a href="#!"><i class="material-icons">delete</i></a>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @endif
                             </div>
                         </div>
                     </div>

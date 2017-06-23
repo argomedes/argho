@@ -11,9 +11,18 @@ class NoteController extends Controller
     public function index(CarRally $carRally)
     {
         $notes = Note::latest()
-            ->paginate(6);
+            ->where('car_rally_id', $carRally->id)
+            ->paginate(10);
 
         return view('dashboard.notes.index', compact('carRally', 'notes'));
+    }
+
+    public function adminIndex()
+    {
+        $notes = Note::latest()
+            ->paginate(10);
+
+        return view('admin.notes.index', compact('notes'));
     }
 
     /**
@@ -58,6 +67,11 @@ class NoteController extends Controller
         return view('dashboard.notes.show', compact('carRally', 'note'));
     }
 
+    public function adminShow(Note $note)
+    {
+        return view('admin.notes.show', compact('note'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -67,6 +81,11 @@ class NoteController extends Controller
     public function edit(CarRally $carRally, Note $note)
     {
         return view('dashboard.notes.edit', compact('carRally', 'note'));
+    }
+
+    public function adminEdit(Note $note)
+    {
+        return view('admin.notes.edit', compact('note'));
     }
 
     /**
@@ -81,6 +100,13 @@ class NoteController extends Controller
         $note->update($request->all());
 
         return redirect()->route('dashboard.notes.index', ['carRally'=> $carRally->alias]);
+    }
+
+    public function adminUpdate(Request $request, Note $note)
+    {
+        $note->update($request->all());
+
+        return redirect()->route('admin.notes.index');
     }
 
     /**

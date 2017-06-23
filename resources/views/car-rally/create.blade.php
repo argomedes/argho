@@ -4,7 +4,7 @@
 <div class="container main">
     <div class="row">
         <div class="col s8 offset-s2">
-            <h4 class="center-align">Edytuj zlot</h4>
+            <h4 class="center-align">Utwórz zlot</h4>
 
             <div class="card">
                 <div class="card-content">
@@ -67,7 +67,7 @@
 
                                     <div class="col s3">
                                         <div class="input-field">
-                                            <label for="starts_at_hour" class="active">Godzina początku zlotu</label>
+                                            <label for="starts_at_hour" class="active">Godzina początku zlotu *</label>
 
                                             <input id="starts_at_hour" type="time" class="{{ $errors->has('starts_at_hour') ? ' invalid' : '' }}" name="starts_at_hour" value="{{ old('starts_at_hour') }}" required>
 
@@ -173,7 +173,7 @@
                                 <h5 class="center-align">Informacje o organizatorze</h5>
 
                                 <div class="input-field{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="email">E-Mail *</label>
+                                    <label for="email">E-mail *</label>
 
                                     <input id="email" type="email"  name="email" value="{{ old('email') }}" required>
 

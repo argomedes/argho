@@ -11,38 +11,107 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => ['guest']], function () {
+    // TODO trzeba id podpiac
+    Route::get('{carRally}/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+    Route::post('{carRally}/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+    Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset.perform');
+    // koniec TODO
 });
+// Auth::routes();
+
+Route::get('administrator/logowanie', 'SessionController@adminCreate')->name('admin.login');
+Route::post('administrator/logowanie', 'SessionController@adminStore');
+
+Route::get('weryfikacja/{activationToken}', [
+    'as' => 'confirmation_path',
+    'uses' => 'Auth\RegisterController@confirm'
+]);
+
+
+Route::get('{carRally}/logowanie', 'SessionController@create')->name('login');
+Route::post('{carRally}/logowanie', 'SessionController@store');
+// Route::get('{carRally}/wyloguj', 'SessionController@destroy')->name('logout');
+Route::post('/wyloguj', 'SessionController@destroy')->name('logout');
 
 //
-Auth::routes();
-// TODO trzeba id podpiac
-// Route::get('{carRally}/password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::post('{carRally}/password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-// Route::get('{carRally}/password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-// Route::post('{carRally}/password/reset', 'Auth\ResetPasswordController@reset');
-// koniec TODO
+
 Route::get('/home', 'HomeController@index');
 //
+// Logowanie
 
-// Zlot samochodowy
+// Rejestracja
 Route::get('/utworz-zlot', 'CarRallyController@create')->middleware('guest')->name('utworz-zlot');
 Route::post('/utworz-zlot', 'CarRallyController@store')->middleware('guest')->name('utworz-zlot.store');
 
+// Strona główna
+Route::get('/', function () {
+    return view('welcome');
+})->name('homepage');
+
+Route::get('/logowanie/krok-1', 'SessionController@stepOne')->name('login.step-one');
+
+// Informacje i regulamin
 Route::get('{carRally}/informacje', 'CarRallyInfoController@show');
 Route::get('{carRally}/regulamin', 'CarRallyRulesController@show');
+
+// Zapisz się
 Route::get('{carRally}/rejestracja', 'RegistrationController@create');
 Route::post('{carRally}/rejestracja', 'RegistrationController@store');
-//
-Route::get('{carRally}/kontakt', 'QuestionCotroller@create')->name('questions.create');
-Route::post('{carRally}/kontakt', 'QuestionCotroller@store')->name('questions.store');
 
-// Logowanie
-Route::get('{carRally}/logowanie', 'SessionController@create')->name('login');
-Route::post('{carRally}/logowanie', 'SessionController@store');
-Route::get('{carRally}/wyloguj', 'SessionController@destroy')->name('wylogowanie');
-//
+// Zadaj pytanie
+Route::get('{carRally}/kontakt', 'QuestionController@create')->name('questions.create');
+Route::post('{carRally}/kontakt', 'QuestionController@store')->name('questions.store');
+
+
+Route::group(['middleware' => ['auth', '\App\Http\Middleware\UserIsAdmin']], function () {
+    Route::get('/administrator', 'CarRallyController@adminPanelShow')->name('admin.dashboard');
+
+    Route::get('administrator/zloty', 'CarRallyController@index')->name('admin.car-rally.index');
+    Route::get('administrator/zloty/{carRally}', 'CarRallyController@adminShow')->name('admin.car-rally.show');
+    Route::get('administrator/zloty/{carRally}/edytuj', 'CarRallyController@adminEdit')->name('admin.car-rally.edit');
+    Route::put('administrator/zloty/{carRally}/edytuj', 'CarRallyController@adminUpdate')->name('admin.car-rally.update');
+    Route::put('administrator/zloty/{carRally}/block', 'CarRallyController@block')->name('admin.car-rally.block');
+
+    Route::get('administrator/wpisy', 'PostController@adminIndex')->name('admin.posts.index');
+    Route::get('administrator/wpisy/{post}', 'PostController@adminShow')->name('admin.posts.show');
+    Route::get('administrator/wpisy/{post}/edytuj', 'PostController@adminEdit')->name('admin.posts.edit');
+    Route::put('administrator/wpisy/{post}/edytuj', 'PostController@adminUpdate')->name('admin.posts.update');
+    Route::delete('administrator/wpisy/{post}/usun', 'PostController@adminDestroy')->name('admin.posts.destroy');
+
+
+    Route::get('administrator/zgloszenia', 'RegistrationController@adminIndex')->name('admin.registrations.index');
+    Route::get('administrator/zgloszenia/{registration}', 'RegistrationController@adminShow')->name('admin.registrations.show');
+    Route::get('administrator/zgloszenia/{registration}/edytuj', 'RegistrationController@adminEdit')->name('admin.registrations.edit');
+    Route::put('administrator/zgloszenia/{registration}/edytuj', 'RegistrationController@adminUpdate')->name('admin.registrations.update');
+    Route::delete('administrator/zgloszenia/{registration}/usun', 'RegistrationController@adminDestroy')->name('admin.registrations.destroy');
+
+    Route::get('administrator/zapytania', 'QuestionController@adminIndex')->name('admin.questions.index');
+    Route::get('administrator/zapytania/{question}', 'QuestionController@adminShow')->name('admin.questions.show');
+    Route::get('administrator/zapytania/{question}/edytuj', 'QuestionController@adminEdit')->name('admin.questions.edit');
+    Route::put('administrator/zapytania/{question}/edytuj', 'QuestionController@adminUpdate')->name('admin.questions.update');
+    Route::delete('administrator/zapytania/{question}/usun', 'QuestionController@adminDestroy')->name('admin.questions.destroy');
+
+    Route::get('administrator/notatki', 'NoteController@adminIndex')->name('admin.notes.index');
+    Route::get('administrator/notatki/{note}', 'NoteController@adminShow')->name('admin.notes.show');
+    Route::get('administrator/notatki/{note}/edytuj', 'NoteController@adminEdit')->name('admin.notes.edit');
+    Route::put('administrator/notatki/{note}/edytuj', 'NoteController@adminUpdate')->name('admin.notes.update');
+    Route::delete('administrator/notatki/{note}/usun', 'NoteController@adminDestroy')->name('admin.notes.destroy');
+
+    Route::get('administrator/uzytkownicy', 'UserController@adminIndex')->name('admin.users.index');
+    Route::get('administrator/uzytkownicy/{user}', 'UserController@adminShow')->name('admin.users.show');
+    Route::get('administrator/uzytkownicy/{user}/edytuj', 'UserController@adminEdit')->name('admin.users.edit');
+    Route::put('administrator/uzytkownicy/{user}/edytuj', 'UserController@adminUpdate')->name('admin.users.update');
+    Route::get('administrator/uzytkownicy/dodaj', 'UserController@adminCreate')->name('admin.users.create');
+    Route::post('administrator/uzytkownicy/dodaj', 'UserController@adminStore')->name('admin.users.store');
+
+
+});
+
+// Aktualności
+Route::get('{carRally}/', 'PostController@index')->name('zlot.index');
+Route::get('{carRally}/wpisy/{post}', 'PostController@show')->name('posts.show');
 
 
 Route::group(['middleware' => ['auth', '\App\Http\Middleware\UserRelatedWithCarRally']], function () {
@@ -71,7 +140,7 @@ Route::group(['middleware' => ['auth', '\App\Http\Middleware\UserRelatedWithCarR
     Route::get('{carRally}/panel/notatki/{note}', 'NoteController@show')->name('dashboard.notes.show');
     Route::get('{carRally}/panel/notatki/{note}/edytuj', 'NoteController@edit')->name('dashboard.notes.edit');
     Route::put('{carRally}/panel/notatki/{note}/edytuj', 'NoteController@update')->name('dashboard.notes.update');
-    Route::get('{carRally}/panel/notatki/{note}/usun', 'NoteController@destroy')->name('dashboard.notes.destroy');
+    Route::delete('{carRally}/panel/notatki/{note}/usun', 'NoteController@destroy')->name('dashboard.notes.destroy');
     Route::post('{carRally}/panel/notatki', 'NoteController@store')->name('dashboard.notes.store');
 
     Route::get('{carRally}/panel/zgloszenia', 'RegistrationController@index')->name('dashboard.registrations.index');
@@ -80,13 +149,17 @@ Route::group(['middleware' => ['auth', '\App\Http\Middleware\UserRelatedWithCarR
     Route::put('{carRally}/panel/zgloszenia/{registration}/edytuj', 'RegistrationController@update')->name('dashboard.registrations.update');
     Route::get('{carRally}/panel/zgloszenia/{registration}/usun', 'RegistrationController@destroy')->name('dashboard.registrations.destroy');
 
-    Route::get('{carRally}/panel/zapytania', 'QuestionCotroller@index')->name('dashboard.questions.index');
-    Route::get('{carRally}/panel/zapytania/{question}', 'QuestionCotroller@show')->name('dashboard.questions.show');
-    Route::get('{carRally}/panel/zapytania/{question}/usun', 'QuestionCotroller@destroy')->name('dashboard.questions.destroy');
+    Route::get('{carRally}/panel/zapytania', 'QuestionController@index')->name('dashboard.questions.index');
+    Route::get('{carRally}/panel/zapytania/{question}', 'QuestionController@show')->name('dashboard.questions.show');
+    Route::get('{carRally}/panel/zapytania/{question}/usun', 'QuestionController@destroy')->name('dashboard.questions.destroy');
 });
-// Posts
 
-Route::get('{carRally}/', 'PostController@index')->name('zlot.index');
-Route::get('{carRally}/wpisy/{post}', 'PostController@show')->name('posts.show');
-
-// Route::get('{carRally}/rejestracja', 'CrewRegisterController@index'); // TODO
+Route::group(['middleware' => ['auth', '\App\Http\Middleware\UserIsCreator']], function () {
+    Route::get('{carRally}/panel/organizatorzy', 'UserController@index')->name('dashboard.users.index');
+    Route::get('{carRally}/panel/organizatorzy/dodaj', 'UserController@create')->name('dashboard.users.create');
+    Route::post('{carRally}/panel/organizatorzy/dodaj', 'UserController@store')->name('dashboard.users.store');
+    Route::get('{carRally}/panel/organizatorzy/{user}', 'UserController@show')->name('dashboard.users.show');
+    Route::get('{carRally}/panel/organizatorzy/{user}/edytuj', 'UserController@edit')->name('dashboard.users.edit');
+    Route::put('{carRally}/panel/organizatorzy/{user}/edytuj', 'UserController@update')->name('dashboard.users.update');
+    Route::put('{carRally}/panel/organizatorzy/{user}/block', 'UserController@block')->name('dashboard.users.block');
+});

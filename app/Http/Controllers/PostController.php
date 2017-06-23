@@ -11,6 +11,7 @@ class PostController extends Controller
     public function index(CarRally $carRally)
     {
         $posts = Post::latest()
+            ->where('car_rally_id', $carRally->id)
             ->paginate(6);
 
         return view('posts.index', compact('carRally', 'posts'));
@@ -19,9 +20,17 @@ class PostController extends Controller
     public function dashboardIndex(CarRally $carRally)
     {
         $posts = Post::latest()
+            ->where('car_rally_id', $carRally->id)
             ->paginate(6);
 
         return view('dashboard.posts.index', compact('carRally', 'posts'));
+    }
+    public function adminIndex()
+    {
+        $posts = Post::latest()
+            ->paginate(10);
+
+        return view('admin.posts.index', compact('posts'));
     }
 
     /**
@@ -71,6 +80,11 @@ class PostController extends Controller
         return view('dashboard.posts.show', compact('carRally', 'post'));
     }
 
+    public function adminShow(Post $post)
+    {
+        return view('admin.posts.show', compact('post'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -80,6 +94,11 @@ class PostController extends Controller
     public function edit(CarRally $carRally, Post $post)
     {
         return view('dashboard.posts.edit', compact('carRally', 'post'));
+    }
+
+    public function adminEdit(Post $post)
+    {
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -96,6 +115,13 @@ class PostController extends Controller
         return redirect()->route('dashboard.posts.index', ['carRally'=> $carRally->alias]);
     }
 
+    public function adminUpdate(Request $request, Post $post)
+    {
+        $post->update($request->all());
+
+        return redirect()->route('admin.posts.index');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -107,5 +133,12 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->route('dashboard.posts.index', ['carRally'=> $carRally->alias]);
+    }
+
+    public function adminDestroy(Post $post)
+    {
+        $post->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 }

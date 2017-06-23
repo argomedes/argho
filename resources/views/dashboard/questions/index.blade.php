@@ -35,7 +35,7 @@
                                         @endphp
                                         @foreach ($questions as $q)
                                             <tr>
-                                                <td>{{ ++$count }}</td>
+                                                <td>{{ (($questions->currentPage() - 1 ) * $questions->perPage() ) + ++$count }}</td>
                                                 <td>{{ $q->name }}</td>
                                                 <td>{{ $q->email }}</td>
                                                 <td>{{ $q->topic }}</td>

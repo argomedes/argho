@@ -19,7 +19,9 @@
 
                     <li class="tab"><a class="tooltipped @if ( substr(URL::current(), 0, strlen(URL::to('/'.$carRally->alias.'/panel/notatki')) ) === URL::to('/'.$carRally->alias.'/panel/notatki')) {{ 'active' }} @endif" href="/{{ $carRally->alias }}/panel/notatki" target="_self" data-position="bottom" data-delay="50" data-tooltip="Notatki"><i class="material-icons">speaker_notes</i></a></li>
 
-                    <li class="tab"><a class="tooltipped @if ( substr(URL::current(), 0, strlen(URL::to('/'.$carRally->alias.'/panel/organizatorzy')) ) === URL::to('/'.$carRally->alias.'/panel/organizatorzy')) {{ 'active' }} @endif" href="/{{ $carRally->alias }}/panel/organizatorzy" target="_self" data-position="bottom" data-delay="50" data-tooltip="Organizatorzy"><i class="material-icons">people</i></a></li>
+                    @if (Auth::user()->creator == 1)
+                        <li class="tab"><a class="tooltipped @if ( substr(URL::current(), 0, strlen(URL::to('/'.$carRally->alias.'/panel/organizatorzy')) ) === URL::to('/'.$carRally->alias.'/panel/organizatorzy')) {{ 'active' }} @endif" href="/{{ $carRally->alias }}/panel/organizatorzy" target="_self" data-position="bottom" data-delay="50" data-tooltip="Organizatorzy"><i class="material-icons">people</i></a></li>
+                    @endif
                 </ul>
             </div>
         </div>

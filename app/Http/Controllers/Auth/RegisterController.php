@@ -72,4 +72,29 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    
+
+    public function confirm($activation_token)
+    {
+        if( ! $activation_token)
+        {
+            return redirect()->route('homepage');
+        }
+
+        $user = User::where('activation_token', $activation_token)->first();
+
+        if ( ! $user)
+        {
+            return redirect()->route('homepage');
+        }
+
+        $user->active = 1;
+        $user->activation_token = null;
+        $user->save();
+
+        auth()->login($user);
+
+        return redirect()->route('login.step-one');
+    }
 }

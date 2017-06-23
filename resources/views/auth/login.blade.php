@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.dashboard-nomenu')
 
 @section('content')
 <div class="container main">
@@ -40,7 +40,7 @@
                                 Zaloguj się
                             </button>
 
-                            <a class="waves-effect waves-light btn" href="{{ route('password.request') }}">
+                            <a class="waves-effect waves-light btn" href="{{ route('password.request', ['carRally'=> $carRally->alias ]) }}">
                                 Nie pamiętsz hasła?
                             </a>
                         </div>
